@@ -1,0 +1,21 @@
+# pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+# pip install -U lightning deepspeed
+
+cupy-cuda11x  # cupy-cuda12x
+transformers>=4.41.2  # Relaxed from ==4.41.2 (CogVLM2 captioning) for diffusers/xfuser compatibility
+imageio
+imageio[ffmpeg]
+safetensors
+einops
+sentencepiece
+protobuf
+modelscope
+ftfy
+pynvml
+pandas
+accelerate
+peft
+
+# For unified sequence parallel (USP)
+# pip install flash-attn==2.7.0.post2 --no-build-isolation  -> 2.7.0.post2 is the most recent version which still supports CUDA 11.8
+# pip install "xfuser[flash-attn]>=0.4.3"

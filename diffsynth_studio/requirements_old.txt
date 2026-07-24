@@ -1,0 +1,16 @@
+# pip install torch==2.5.1 torchvision --index-url https://download.pytorch.org/whl/cu118
+# pip install -U lightning deepspeed
+
+cupy-cuda11x  # cupy-cuda12x
+transformers==4.46.2
+imageio
+imageio[ffmpeg]
+safetensors
+einops
+sentencepiece
+protobuf
+modelscope
+ftfy
+pandas
+peft
+pynvml

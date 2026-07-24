@@ -1,0 +1,82 @@
+# Unified uv env for ID-V2V. Preprocessing (SAM3 for the default idv2v model; DAViD + DepthV2 only
+# for the alternate idv2v_with_depth model) + inference (Wan 2.1 I2V + VACE control + SVI).
+#
+# Quickstart:  uv sync && source .venv/bin/activate
+#
+# Hard constraints (don't relax without re-testing):
+#   * Python 3.10        — the flash-attn wheel below is cp310-only
+#   * torch==2.6 cu118   — the flash-attn wheel is compiled against this exact torch + CUDA
+#
+# Other deps use loose ranges; uv.lock pins exact versions tested.
+
+[project]
+name = "idv2v"
+version = "0.1.0"
+description = "IDv2v: identity-preserving video-to-video via SVI-Shot I2V + VACE multi-control"
+requires-python = "==3.10.*"
+dependencies = [
+    # diffsynth fork (local, contains the custom Wan multi-VACE + SVI pipeline)
+    "diffsynth",
+
+    # torch + flash-attn: tightly pinned together (wheel built for this exact torch/CUDA)
+    "torch==2.6",
+    "torchvision",
+    "flash-attn @ https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.1.post4/flash_attn-2.7.1.post4+cu11torch2.6cxx11abiFALSE-cp310-cp310-linux_x86_64.whl",
+
+    # diffusion / inference
+    "xfuser[flash-attn]",
+    "diffusers>=0.35.2",
+    "peft",
+
+    # HuggingFace (SAM3 needs transformers >=5.6 for Sam3VideoModel)
+    "transformers>=5.6",
+    "huggingface-hub",
+    "accelerate",
+    "safetensors",
+
+    # ONNX (DAViD — only used by the alternate idv2v_with_depth model). cu12 NVIDIA libs are
+    # bootstrapped on first run by scripts/preprocess_with_depth.sh into .venv/cuda12_libs/
+    # (kept separate so they don't clash with torch's cu118 nvidia libs).
+    "onnxruntime-gpu>=1.22",
+    "onnx",
+
+    # preproc / depth
+    "einops",
+    "easydict",
+    "pycocotools",
+    "scikit-image",
+
+    # media
+    "av",
+    "opencv-python-headless",
+    "imageio[ffmpeg]",
+
+    # utilities
+    "matplotlib",
+    "scipy",
+    "numpy",
+    "pillow",
+    "tqdm",
+    "natsort",
+    "setuptools",
+]
+
+[tool.uv]
+build-constraint-dependencies = ["setuptools<81"]
+
+[tool.uv.sources]
+diffsynth = { path = "./diffsynth_studio", editable = true }
+torch = { index = "torch-cu118" }
+torchvision = { index = "torch-cu118" }
+
+[[tool.uv.index]]
+name = "torch-cu118"
+url = "https://download.pytorch.org/whl/cu118"
+explicit = true
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

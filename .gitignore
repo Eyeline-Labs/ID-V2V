@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.claude/
+# uv.lock IS committed for reproducible installs
+
+# Local checkpoint downloads (ignore everything except the README)
+checkpoints/*
+!checkpoints/README.md
+
+# Local testing harness (machine-specific paths, real video files, all test outputs)
+local_test/

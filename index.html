@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID-V2V: Identity-preserving Video Restylization</title>
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Google Sans', 'Noto Sans', 'Segoe UI', sans-serif;
+            font-size: 14pt;
+            max-width: 80%;
+            margin-left: 18%;
+            padding: 20px 40px;
+            background: #fff;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        a {
+            color: #3273dc;
+            text-decoration: none;
+            transition: color 0.2s, text-decoration 0.2s;
+        }
+        a:hover {
+            color: #2759a5;
+            text-decoration: underline;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 32px 0px 0px 0px;
+        }
+        .video-row {
+            display: flex;
+            width: 100%;
+            gap: 16px;
+            margin: 32px 0px;
+        }
+        .ours-720p {
+            width: 100%;
+            flex: 1;
+            margin: 0;
+        }
+        .ab-tp {
+            width: 75%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h1 {
+            text-align: center;
+            margin: 24px 0px;
+            color: #1a5490;
+            font-weight: 600;
+            padding-bottom: 12px;
+        }
+        h2 {
+            text-align: center;
+            margin: 48px 0px 24px 0px;
+            color: #2874a6;
+            font-weight: 600;
+            padding: 16px;
+            background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f7 100%);
+            border-left: 5px solid #3498db;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+        h3 {
+            text-align: center;
+            margin: 32px 0px 20px 0px;
+            color: #34495e;
+            font-weight: 600;
+            padding: 12px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            border-left: 4px solid #5dade2;
+        }
+        .exp {
+            margin: 12px 0px;
+            font-style: italic;
+            text-align: center;
+            padding: 12px 20px;
+            background-color: #f8f9fa;
+            border-left: 3px solid #95a5a6;
+            border-radius: 4px;
+            color: #555;
+        }
+        p {
+            margin: 16px 0px;
+            text-align: justify;
+        }
+        ol {
+            background-color: #f8f9fa;
+            padding: 20px 20px 20px 48px;
+            border-radius: 4px;
+            margin: 16px 0px;
+        }
+        ol li {
+            margin: 8px 0px;
+        }
+        #toc {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 1%;
+            width: 14%;
+            font-size: 12pt;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        #toc h4 {
+            margin-top: 0;
+            margin-bottom: 24px;
+            text-align: left;
+            border: 2px solid transparent;
+            padding: 8px;
+            font-size: 14pt;
+            color: #1a5490;
+            border-bottom: 2px solid #3498db;
+        }
+        #toc ul {
+            list-style-type: none;
+            padding: 0px;
+            margin: 0px;
+        }
+        #toc li {
+            margin-bottom: 8px;
+        }
+        #toc li.toc-h3 {
+            margin-left: 16px;
+        }
+        #toc li.active a {
+            background-color: #3498db;
+            color: #ffffff;
+            border-radius: 4px;
+        }
+        #toc a {
+            text-decoration: none;
+            color: #2c3e50;
+            display: block;
+            border: 2px solid transparent;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        #toc a:hover {
+            background-color: #ecf0f1;
+            color: #1a5490;
+        }
+        video {
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav id="toc"></nav>
+
+    <h1 style="margin-bottom: 12px">ID-V2V: Identity-preserving Video Restylization</h1>
+
+    <!-- Authors -->
+    <div style="text-align: center; margin: 16px 0 8px 0; font-size: 1.15em;">
+        <a href="https://yuancheng-xu.github.io/" target="_blank">Yuancheng Xu</a><sup>1</sup>,&nbsp;
+        <a href="https://mingminghe.com/" target="_blank">Mingming He</a><sup>2</sup>,&nbsp;
+        <a href="https://pablosalaman.ca/" target="_blank">Pablo Salamanca</a><sup>1</sup>,&nbsp;
+        <a href="https://limacv.github.io/homepage/" target="_blank">Li Ma</a><sup>2</sup>,&nbsp;
+        <a href="https://yashkant.github.io/" target="_blank">Yash Kant</a><sup>1</sup>,&nbsp;
+        <a href="https://www.linkedin.com/in/emmettsteven" target="_blank">Emmett Steven</a><sup>1</sup>,&nbsp;
+        <a href="https://www.pauldebevec.com/" target="_blank">Paul Debevec</a><sup>1</sup>,&nbsp;
+        <a href="https://ningyu1991.github.io/" target="_blank">Ning Yu</a><sup>1</sup>
+    </div>
+    <!-- Institutions -->
+    <div style="text-align: center; margin: 4px 0 20px 0; font-size: 1.05em; color: #555;">
+        <sup>1</sup>Netflix &nbsp;&nbsp;&nbsp;
+        <sup>2</sup>Eyeline Labs
+    </div>
+
+    <!-- Venue -->
+    <div style="text-align: center; margin: 12px 0 8px 0; font-size: 1.1em; font-weight: 700; color: #555;">
+        SIGGRAPH Asia 2026
+    </div>
+
+    <!-- Links -->
+    <div style="text-align: center; margin: 8px 0 24px 0; display: flex; justify-content: center; gap: 12px;">
+        <a href="https://arxiv.org/abs/2607.22830" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; background: #363636; color: #fff; text-decoration: none; border-radius: 20px; font-size: 0.95em; font-weight: 600; transition: background 0.2s ease;">
+            <span><i class="ai ai-arxiv" style="font-size: 1.2em;"></i></span>
+            <span>arXiv</span>
+        </a>
+        <a href="https://github.com/Eyeline-Labs/ID-V2V" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; background: #363636; color: #fff; text-decoration: none; border-radius: 20px; font-size: 0.95em; font-weight: 600; transition: background 0.2s ease;">
+            <span><i class="fab fa-github" style="font-size: 1.2em;"></i></span>
+            <span>GitHub</span>
+        </a>
+    </div>
+
+    <!-- Overview Video -->
+    <div style="margin: 24px auto; max-width: 800px;">
+        <video controls style="width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            <source src="media/changeBg_demo.mp4" type="video/mp4">
+        </video>
+        <p style="font-size: 0.85em; color: #888; text-align: center; margin-top: 10px; font-style: italic;">For demonstration and inspiration purposes only.</p>
+    </div>
+
+    <!-- Abstract -->
+    <div style="max-width: 900px; margin: 0 auto;">
+    <h2 id="abstract">Abstract</h2>
+    <p style="font-size: 0.92em;">In visual storytelling, human performances are essential to telling meaningful stories and bringing a creative vision to life. However, preserving human identity and performance while enabling flexible visual edits remains a fundamental challenge for generative video models. We formalize this challenge through a research exploration as identity-preserving video restylization for production environments, a task that propagates scene, lighting, and style changes specified by an edited keyframe across a source video, while strictly preserving facial likeness and performance, including expressions, eye gaze, and lip synchronization. A key obstacle is the absence of paired training data, as identity-preserving restylized video pairs are rarely available in real-world settings. To address this, we propose a principled decoupling between source-grounded identity preservation and edit-driven video synthesis. Our key insight is that facial appearance and expression should remain invariant, with illumination being the primary permissible variation. We therefore cast identity preservation as a video relighting problem, while modeling visual edit propagation as controlled video synthesis guided by the edited keyframe. Building on this formulation, we introduce ID-V2V, a video-to-video generative framework that integrates complementary control signals: relit facial regions and facial normal maps tightly constrain facial likeness and performance, while edited keyframes and depth sequences enable flexible and temporally coherent generation. This design enables effective construction of training pairs from a single video, eliminating the need for scarce paired data. Extensive experiments demonstrate that ID-V2V significantly outperforms existing methods in preserving facial likeness and fine-grained facial performance, robustly supports both single- and multi-subject scenarios, and delivers high visual quality, highlighting its strong potential for real-world content production.</p>
+    </div>
+
+    <!-- Imperfect keyframe -->
+    <div style="max-width: 1300px; margin: 0 auto;">
+    <h2 id="imperfect-keyframe">Imperfect keyframe</h2>
+    <p style="font-size: 0.92em; max-width: 900px; margin-left: auto; margin-right: auto;">Image-editing models like NanoBanana often can't hold the exact pose or expression when restyling a frame, so the stylized first frame ends up misaligned with the source video's first frame. That's fine&mdash;you don't need a pixel-perfect keyframe. The first frame follows your imperfect keyframe, but from the second frame onward ID-V2V re-aligns to the source video's identity and performance, automatically correcting the mismatch.</p>
+    <p style="font-size: 0.92em; max-width: 900px; margin-left: auto; margin-right: auto;">For each example below we show three views: <b>(1)</b> the stylized keyframe flipping against the source video's first frame, exposing the mismatch in pose and expression; <b>(2)</b> the ID-V2V output &mdash; the first frame inherits the imperfect keyframe, but subsequent frames snap back to the source's pose and expression, preserving the original performance; and <b>(3)</b> a slider comparing the output against the source video.</p>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 32px 0;">
+        <div style="flex: 1 1 30%; min-width: 300px;">
+            <video autoplay loop muted playsinline style="width: 100%; border-radius: 8px;"><source src="media/NonAlignedKeyframe/sample_1_firstframe_flip.mp4" type="video/mp4"></video>
+            <p style="font-size: 0.82em; color: #666; text-align: center; margin-top: 8px;">1. Stylized first frame vs. source first frame (misaligned pose &amp; expression)</p>
+        </div>
+        <div style="flex: 1 1 30%; min-width: 300px;">
+            <video controls autoplay loop muted playsinline style="width: 100%; border-radius: 8px;"><source src="media/NonAlignedKeyframe/sample_1_gen.mp4" type="video/mp4"></video>
+            <p style="font-size: 0.82em; color: #666; text-align: center; margin-top: 8px;">2. ID-V2V output. Tip: pause on the first frame, then step forward &mdash; notice it snaps from the imperfect keyframe back to the source's pose and expression.</p>
+        </div>
+        <div style="flex: 1 1 30%; min-width: 300px;">
+            <video autoplay loop muted playsinline style="width: 100%; border-radius: 8px;"><source src="media/NonAlignedKeyframe/sample_1_slider.mp4" type="video/mp4"></video>
+            <p style="font-size: 0.82em; color: #666; text-align: center; margin-top: 8px;">3. Slider: output vs. source video</p>
+        </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 32px 0;">
+        <div style="flex: 1 1 30%; min-width: 300px;">
+            <video autoplay loop muted playsinline style="width: 100%; border-radius: 8px;"><source src="media/NonAlignedKeyframe/sample_2_firstframe_flip.mp4" type="video/mp4"></video>
+            <p style="font-size: 0.82em; color: #666; text-align: center; margin-top: 8px;">1. Stylized first frame vs. source first frame (misaligned pose &amp; expression)</p>
+        </div>
+        <div style="flex: 1 1 30%; min-width: 300px;">
+            <video controls autoplay loop muted playsinline style="width: 100%; border-radius: 8px;"><source src="media/NonAlignedKeyframe/sample_2_gen.mp4" type="video/mp4"></video>
+            <p style="font-size: 0.82em; color: #666; text-align: center; margin-top: 8px;">2. ID-V2V output. Tip: pause on the first frame, then step forward &mdash; notice it snaps from the imperfect keyframe back to the source's pose and expression.</p>
+        </div>
+        <div style="flex: 1 1 30%; min-width: 300px;">
+            <video autoplay loop muted playsinline style="width: 100%; border-radius: 8px;"><source src="media/NonAlignedKeyframe/sample_2_slider.mp4" type="video/mp4"></video>
+            <p style="font-size: 0.82em; color: #666; text-align: center; margin-top: 8px;">3. Slider: output vs. source video</p>
+        </div>
+    </div>
+    </div>
+
+    <!-- Video Relighting -->
+    <div style="max-width: 900px; margin: 0 auto;">
+    <h2 id="video-relighting">Video Relighting</h2>
+    <p style="font-size: 0.92em;">Video relighting can be viewed as a more restricted case of video restylization. Whereas restylization allows edits to the background and the overall scene, and can substantially change the appearance of the video, relighting keeps the full scene intact&mdash;including both the foreground human subjects and the background&mdash;and only alters the illumination. Because ID-V2V already handles the harder, less constrained restylization task, it naturally supports relighting as a special case. In the examples below, we relight the first frame with NanoBanana Pro and then propagate the new lighting throughout the video, faithfully preserving motion, expression, and objects.</p>
+    <div style="margin: 24px auto; max-width: 800px;">
+        <video controls style="width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            <source src="media/relighting_demo.mp4" type="video/mp4">
+        </video>
+    </div>
+    </div>
+
+    <!-- Technical Details -->
+    <div style="max-width: 900px; margin: 0 auto;">
+    <h2 id="technical-details">Technical Details</h2>
+    <p style="font-size: 0.92em;">The central challenge in identity-preserving video restylization is data. In real-world settings it is nearly impossible to capture paired videos of the same person performing identical actions under different visual styles, and prior self-reconstruction approaches that rely on abstract control signals&mdash;such as facial landmarks or low-dimensional identity embeddings&mdash;are too coarse to faithfully retain fine-grained facial performance.</p>
+    <p style="font-size: 0.92em;">Our key insight is to <b>decouple edit-driven synthesis from source-grounded identity preservation</b>. Synthesis decides <i>what to generate</i>: it is guided by the edited keyframe and is free to render the desired scene, style, and background. Identity preservation decides <i>what must stay fixed</i>: the human subject is tightly anchored to the source video so that facial likeness and fine-grained performance&mdash;expression, gaze, and lip motion&mdash;are retained exactly. We realize this split spatially. During training the face regions are kept as input and everything outside them is masked out, turning the region outside the face into a keyframe-guided video generation problem and the face itself into an identity-preservation problem.</p>
+    <p style="font-size: 0.92em;">The core of the method is how we make identity preservation learnable without real paired data: we construct the aligned pairs ourselves through relighting. Starting from an ordinary training video shot with cinematic lighting, we take its face regions and apply an image relighting model that converts them to regular lighting, approximating the lighting of the source video that will be supplied at inference. The model is then trained to invert this process: given the regularly lit faces, it restores the original cinematic lighting while faithfully preserving likeness and subtle expression. And since only the faces are provided as input, reconstructing the original video also forces the model to generate the entire masked region&mdash;the body, background, and surrounding scene&mdash;from scratch, so it simultaneously learns coherent, keyframe-guided synthesis of everything outside the face. Because the training target is simply the original video, every pair is perfectly aligned&mdash;giving us direct supervision for both identity preservation and scene generation without ever needing real-world paired footage.</p>
+    <div style="margin: 24px auto; max-width: 800px;">
+        <video controls style="width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            <source src="media/Paper_Explained_and_Results_Video.mp4" type="video/mp4">
+        </video>
+    </div>
+    </div>
+
+    <!-- BibTeX -->
+    <div style="max-width: 900px; margin: 160px auto 0 auto;">
+    <p style="font-size: 1.3em; font-weight: 700; margin: 20px 0 12px 0;">BibTeX</p>
+    <pre style="background: #f5f5f5; border-radius: 8px; padding: 20px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; text-align: left;"><code>TBD</code></pre>
+    </div>
+
+    <br/><br/>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var tocContainer = document.getElementById("toc");
+        var tocTitle = document.createElement("h4");  // Add TOC heading (using <h4>)
+        tocTitle.textContent = "Table of contents";
+        tocContainer.appendChild(tocTitle);
+        var tocList = document.createElement("ul");
+        var headings = document.querySelectorAll("h2, h3");  // Only include <h2> and <h3> tags in the TOC
+        headings.forEach(function(heading, index) {
+            // If heading has an id="" field, then use it as the custom code, otherwise create it from heading
+            if (!heading.id) {
+                heading.id = heading.textContent
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^a-z0-9]+/g, '-')  // Replace non-alphanumeric chars with hyphens
+                    .replace(/^-+|-+$/g, '');     // Remove leading/trailing hyphens
+            }
+
+            var li = document.createElement("li");  // Create TOC list item and link
+            if (heading.tagName === "H3") {  // Indent <h3> (see <style> for the indentation)
+                li.classList.add("toc-h3");
+            }
+            var a = document.createElement("a");
+            a.href = "#" + heading.id;  // Link to heading ID
+            a.textContent = heading.textContent;
+            li.appendChild(a);
+            tocList.appendChild(li);
+        });
+        tocContainer.appendChild(tocList);
+
+        window.addEventListener("scroll", function() {  // Scroll monitor to highlight current section
+            var scrollPos = window.scrollY || document.documentElement.scrollTop;
+            var currentId = "";
+            headings.forEach(function(heading) {  // Find the first header that above scroll position
+                if (heading.offsetTop <= (scrollPos + 128)) {  // 128px offset so we highlight slightly before header
+                    currentId = heading.id;                    // hits the very top
+                }
+            });
+            document.querySelectorAll('#toc li').forEach(function(li) {  // Remove active class from all items
+                li.classList.remove('active');
+            });
+            if (currentId) {  // Add active class to current item
+                var activeLink = document.querySelector('#toc a[href="#' + currentId + '"]');
+                if (activeLink) {
+                    activeLink.parentElement.classList.add('active');
+                }
+            }
+        });
+
+        var videos = document.querySelectorAll("video");  // Find all <video autoplay loop muted playsinline> tags ...
+        for (var i = 0; i < videos.length; i++) {  // ... and make them autoplay (among other properties)
+            videos[i].autoplay = true;
+            videos[i].loop = true;
+            videos[i].muted = true;
+        }
+    });
+</script>
+</body>
+</html>

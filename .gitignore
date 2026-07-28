@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Logs & temp
+*.log
+*.tmp
+
+# Backups / re-encode artifacts (don't commit large source/backup videos)
+*_ORIGINAL*.mp4
+*_crf[0-9]*.mp4
+*.bak

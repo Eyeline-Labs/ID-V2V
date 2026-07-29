@@ -45,7 +45,7 @@ This fetches the **`idv2v.pth`** checkpoint (from [`Eyeline-Labs/ID-V2V`](https:
 
 # &#127916; Model inference
 
-The ID-V2V model takes a **source video**, a **stylized first frame** (the look you want), an optional set of **keyframes**, and a **text prompt**, and generates a stylized video that follows the keyframe(s) while preserving the source's identity and performance. Running it is two steps: a **preprocessing** pass that derives the control signal from the source, followed by the **generation** step.
+The ID-V2V model takes a **source video**, a **stylized first frame** (the look you want), an optional set of **keyframes**, and a **text prompt**, and generates a stylized video that follows the keyframe(s) while preserving the source's identity and performance. Running it is two steps: a **preprocessing** pass that derives the control signal from the source, followed by the **generation** step. Generation runs at 720p.
 
 ## Input: the sample directory
 

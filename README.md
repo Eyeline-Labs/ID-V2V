@@ -23,6 +23,8 @@ This repository contains:
 - [Two model variants](#-two-model-variants) — `idv2v` and an optional normal-depth-augmented variant
 - [Repository layout](#-repository-layout)
 
+Thanks to the community, ID-V2V is also on [ComfyUI](https://github.com/Comfy-Org/ComfyUI/pull/15139) and [Fal API](https://fal.ai/models/fal-ai/id-v2v). 
+
 # &#128295; Environment setup
 
 A single unified `uv` environment covers preprocessing and inference.
